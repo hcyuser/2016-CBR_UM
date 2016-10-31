@@ -1,0 +1,36 @@
+the meaning for each column is
+Number of Persons/price/Transportation/duration/season/Holiday Type
+
+Transportation:
+car 1
+coach 2
+plane 3
+Train 4
+
+Season:
+January 1
+february 2
+march 3
+......
+
+£¨I transformed words to numbers for easily calculating the distances£©
+
+
+the purpose is judge Holiday Type through use first five features
+
+
+
+
+process of the code:
+
+1.processing data:(import data)from csv
+
+2.calculating the distance.
+
+3.searching the nearest cases
+
+4.get the result(choose the case)
+
+5.calculate the percentage of accuracy
+
+6.main program:string the functions together.
