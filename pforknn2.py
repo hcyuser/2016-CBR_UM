@@ -3,13 +3,18 @@ import random
 import math
 import operator
 
+trainingSet=[]
+testSet=[]
+
 with open('travel.csv','rb') as csvfile:
 	lines=csv.reader(csvfile)
 	for row in lines:
 		print ','.join(row)
 
 
-def loadDataset(filename, split,trainingSet=[], testSet=[]):
+def loadDataset(filename, split):
+	global trainingSet
+	global testSet
 	# type: (object, object, object, object) -> object
 	with open(filename,'rb') as csvfile:
 		lines=csv.reader(csvfile)
@@ -31,8 +36,9 @@ def euclideanDistance(instance1,instance2,length):
 
 
 
-def getNeighbors(trainingSet, testInstance, k, distances=None):
-	distance=[]
+def getNeighbors(testInstance, k):
+	global trainingSet
+	distances = []
 	length=len(testInstance)-1
 	for x in range(len(trainingSet)):
 		dist = euclideanDistance(testInstance,trainingSet[x],length)
@@ -54,7 +60,8 @@ def getResponse(neighbors):
 	sortedVotes= sorted(classVotes.iteritems(),key=operator.itemgetter(1),reverse=True)
 	return sortedVotes[0][0]
 
-def getAccuracy(testSet,predictions):
+def getAccuracy(predictions):
+	global testSet
 	correct=0
 	for x in range(len(testSet)):
 		if testSet[x][-1]== predictions[x]:
@@ -63,21 +70,21 @@ def getAccuracy(testSet,predictions):
 
 
 def main():
-	trainingSet=[]
-	testSet=[]
+	global trainingSet
+	global testSet
 	split=0.67
-	loadDataset(split, 'travel.csv', trainingSet, testSet)
+	loadDataset('travel.csv',split)
 	print'Train Set:' + repr(len(trainingSet))
 	print'Test Set:' + repr(len(testSet))
 
 	predictions=[]
 	k=3
 	for x in range(len(testSet)):
-		neighbors = getNeighbors(trainingSet,testSet[x],k)
+		neighbors = getNeighbors(testSet[x],k)
 		result = getResponse(neighbors)
 		predictions.append(result)
 		print('> predicted='+ repr(result) + ',actual ='+ repr(testSet[x][-1]))
-	accuracy = getAccuracy(testSet,predictions)
+	accuracy = getAccuracy(predictions)
 	print('Accuracy:' + repr(accuracy)+'%')
 
 
